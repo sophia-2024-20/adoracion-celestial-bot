@@ -1,7 +1,8 @@
 // server.js – Compatible con ESM y Google Gemini en Render
 
 import express from "express";
-import fetch from "node-fetch";
+const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
+
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -84,3 +85,4 @@ Pregunta del usuario:
 app.listen(PORT, () => {
   console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
 });
+

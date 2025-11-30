@@ -1,14 +1,24 @@
 // server.js – Compatible con ESM y Google Gemini en Render
 
 import express from "express";
-const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
-
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
+
+// 🔓 Permitir peticiones desde cualquier sitio (tu web)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 const PORT = process.env.PORT || 10000;
+
 
 // 🔑 API key desde Render (Environment Variables)
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -85,4 +95,5 @@ Pregunta del usuario:
 app.listen(PORT, () => {
   console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
 });
+
 
